@@ -54,16 +54,15 @@ class ReportController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'value' => 'required',
-            'quantity' => 'required'
-        ]);
-
-        $client = Client::findOrFail(Auth::id());
-        $name = $client->name;
-
         try {
-            $cards = AvailableCard::where('client_name', $name)
+            $data = $request->validate([
+                'value' => 'required',
+                'quantity' => 'required'
+            ]);
+
+            $id = 1;//Auth::id();
+
+            $cards = AvailableCard::where('client_id', $id)
                 ->where('value', $data['value']);
 
             if ($data['quantity'] > $cards->count()) {
@@ -89,7 +88,7 @@ class ReportController extends Controller
                 $card->delete();
 
                 $av_card = Card::where('value', $data['value'])
-                    ->where('client_name', $name)
+                    ->where('client_id', $id)
                     ->first();
 
                 $av_card->delete();
@@ -98,7 +97,7 @@ class ReportController extends Controller
             $amount = $data['quantity'] * $cards[0]['value'];
 
             Report::create([
-                'client_name' => $name,
+                'client_id' => $id,
                 'amount' => $amount
             ]);
 

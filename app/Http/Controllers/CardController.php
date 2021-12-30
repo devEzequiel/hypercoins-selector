@@ -56,12 +56,11 @@ class CardController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'value' => 'required',
-            'code' => 'required|min:5|max:30|unique:cards',
+            'array' => 'required',
         ]);
 
         try {
-            foreach ($data as $d) {
+            foreach ($data['array'] as $d) {
                 $card = new Card();
                 $card->value = $d['value'];
                 $card->code = $d['code'];

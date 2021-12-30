@@ -15,12 +15,12 @@ class CreateReportsTable extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_name');
+            $table->unsignedBigInteger('client_id');
 
             $table->decimal('amount');
             $table->timestamps();
 
-            $table->foreign('client_name')->references('name')->on('clients')->cascadeOnDelete();
+            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });
     }
 

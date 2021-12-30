@@ -14,7 +14,7 @@ class ClientController extends Controller
         return view("clients.index");
     }
 
-    public function getCLients(): JsonResponse
+    public function getClients(): JsonResponse
     {
         try {
             $clients = Client::all();
@@ -48,7 +48,7 @@ class ClientController extends Controller
         $data = $request->validate([
             'email' => 'required|unique:clients',
             'name' => 'required',
-            'password' => 'required'
+            'password' => 'required|min:6'
         ]);
 
         try {
@@ -75,13 +75,13 @@ class ClientController extends Controller
         ]);
 
         try {
-            foreach ($data['cards'] as $id => $cards) {
+            foreach ($data['array'] as $id => $cards) {
                 if ($cards['quantity'] > 0) {
                     for ($i = 1; $i <= $cards['quantity']; $i++) {
-                        AvailableCard::create(
-                            ['client_id' => $data['client_id'],
-                                ['value' => $id]
-                            ]);
+                        dump(AvailableCard::create([
+                            'client_id' => $data['client_id'],
+                            'value' => $id
+                        ]));
                     }
                 }
             }
@@ -98,7 +98,7 @@ class ClientController extends Controller
         }
     }
 
-    public function update(Request $request): JsonResponse
+    public function update(int $id, Request $request): JsonResponse
     {
         $data = $request->validate([
             'email' => 'nullable|unique:clients',
@@ -107,7 +107,8 @@ class ClientController extends Controller
         ]);
 
         try {
-            $client = Client::update($data);
+            $client = Client::find($id);
+            $client->update($data);
 
             return response()->json([
                 'success' => true,

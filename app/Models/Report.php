@@ -10,7 +10,7 @@ class Report extends Model
     use HasFactory;
 
     protected $fillable = [
-        'client_name',
+        'client_id',
         'amount'
     ];
 

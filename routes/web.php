@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::namespace('clients')->name('clients.')->group(function () {
     Route::get('/clients', [ClientController::class, 'index'])->name('index');
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('show');
-    Route::get('/clients/all', [ClientController::class, 'getClients'])->name('getClients');
+    Route::get('/get/clients', [ClientController::class, 'getClients'])->name('getClients');
     Route::post('/clients', [ClientController::class, 'store'])->name('store');
     Route::put('/clients', [ClientController::class, 'addBalance'])->name('add.balance');
     Route::put('/clients/{id}', [ClientController::class, 'update'])->name('update');
@@ -46,7 +46,7 @@ Route::namespace('reports')->name('reports.')->group(function () {
     Route::get('/reports/{start_date}/{end_date}', [ReportController::class, 'getReport'])->name('getReport');
     Route::get('/reports/create', [ReportController::class, 'create'])->name('create');
 
-    Route::post('/reports', [CardController::class, 'store'])->name('store');
+    Route::post('/reports', [ReportController::class, 'store'])->name('store');
 });
 
 Auth::routes();

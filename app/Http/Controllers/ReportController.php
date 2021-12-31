@@ -63,7 +63,7 @@ class ReportController extends Controller
             $id = 1;//Auth::id();
 
             $cards = AvailableCard::where('client_id', $id)
-                ->where('value', $data['value']);
+                ->where('value', $data['value'])->get();
 
             if ($data['quantity'] > $cards->count()) {
                 return response()->json([
@@ -72,7 +72,7 @@ class ReportController extends Controller
                 ], 422);
             }
 
-            $cards = Card::where('value', $data['value']);
+            $cards = Card::where('value', $data['value'])->get();
 
             if ($data['quantity'] > $cards->count()) {
                 return response()->json([
@@ -83,11 +83,14 @@ class ReportController extends Controller
 
             $cards = [];
             for ($i = 1; $i <= $data['quantity']; $i++) {
-                $card = Card::where('value', $data['value'])->first();
-                $cards[] = $card->toArray();
+                $card = Card::where('value', $data['value'])
+                    ->first()
+                    ->makeHidden(['created_at', 'updated_at']);
+
+                $cards[] = $card;
                 $card->delete();
 
-                $av_card = Card::where('value', $data['value'])
+                $av_card = AvailableCard::where('value', $data['value'])
                     ->where('client_id', $id)
                     ->first();
 

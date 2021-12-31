@@ -6,6 +6,7 @@ use App\Models\AvailableCard;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -17,11 +18,26 @@ class ClientController extends Controller
     public function getClients(): JsonResponse
     {
         try {
-            $clients = Client::all();
+            $clients = Client::all()->toArray();
+
+            $data = [];
+            foreach ($clients as $client) {
+                $balance = AvailableCard::selectRaw('value, count(*) as total')
+                    ->where('client_id', $client['id'])
+                    ->groupBy('value')
+                    ->get()->toArray();
+
+                $quantity = [];
+                foreach ($balance as $b) {
+                    $quantity[] = ['value' => $b['value'], 'quantity' => $b['total']];
+                }
+
+                $data[] = ['client' => $client, 'balance' => $quantity];
+            }
 
             return response()->json([
                 'success' => true,
-                'data' => $clients
+                'data' => $data
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -35,7 +51,7 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
 
-        return view("clients.show")->with($client);
+        return view("clients.show")->with(compact('client'));
     }
 
     public function create()
@@ -78,10 +94,10 @@ class ClientController extends Controller
             foreach ($data['array'] as $id => $cards) {
                 if ($cards['quantity'] > 0) {
                     for ($i = 1; $i <= $cards['quantity']; $i++) {
-                        dump(AvailableCard::create([
+                        AvailableCard::create([
                             'client_id' => $data['client_id'],
                             'value' => $id
-                        ]));
+                        ]);
                     }
                 }
             }

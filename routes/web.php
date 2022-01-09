@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('index');
 });
 
 Route::namespace('clients')->name('clients.')->group(function () {
@@ -28,7 +28,7 @@ Route::namespace('clients')->name('clients.')->group(function () {
     Route::put('/clients', [ClientController::class, 'addBalance'])->name('add.balance');
     Route::put('/clients/{id}', [ClientController::class, 'update'])->name('update');
 
-    Route::get('/clients', [ClientController::class, 'create'])->name('create');
+    // Route::get('/clients', [ClientController::class, 'create'])->name('create');
     Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('delete');
 });
 
@@ -49,6 +49,6 @@ Route::namespace('reports')->name('reports.')->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('store');
 });
 
-Auth::routes();
+// Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

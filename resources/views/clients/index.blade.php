@@ -5,7 +5,7 @@
 <div id="clients">
     <h1>Clientes</h1>
     <div class="mt-6">
-    <table class="table">
+    {{-- <table class="table">
         <thead>
             <tr>
                 <th scope="col">Name</th>
@@ -14,12 +14,29 @@
             </tr>
         </thead>
         <tbody  v-for="client in clients">
-            <td v-html="client"></td>
-            {{-- <td v-html="client.client.email"></td>
-            <td v-html="client.client.password"></td> --}}
+            <td v-html="message"></td> 
+            <td v-html="client.client.email"></td>
+            <td v-html="client.client.password"></td>
         </tbody>
-    </table>
-</div>
+    </table> --}}
 
-<script src="{{asset('js/clients.js')}}" defer></script>
+    <div>
+        <h4 class="client-name" v-on:click="show = true">Nome do Cliente</h4>
+        <ul v-if="clientData">
+            <li><span>Email:</span> emaildoclient@email.com</li>
+            <li><span>Senha:</span> passwordExample</li>
+            <li><span>Email:</span> emaildoclient@email.com</li>
+            <li><span>Saldo</span> XXXXX</li>
+        </ul>
+        <h4>Nome do Cliente</h4>
+        <ul v-if="clientData">
+            <li> <span>Email:</span> emaildoclient@email.com</li>
+            <li><span>Senha:</span> passwordExample</li>
+            <li><span>Email:</span> emaildoclient@email.com</li>
+            <li><span>Saldo</span> </li>
+        </ul>
+    </div>
+</div>
+{{-- <script src="{{asset('js/client.js')}}" defer></script> --}}
+
 @endsection

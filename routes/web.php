@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('master');
 });
 
 Route::namespace('clients')->name('clients.')->group(function () {
@@ -49,6 +49,6 @@ Route::namespace('reports')->name('reports.')->group(function () {
     Route::post('/reports', [ReportController::class, 'store'])->name('store');
 });
 
-// Auth::routes();
+Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

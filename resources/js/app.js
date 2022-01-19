@@ -5,6 +5,9 @@
  */
 
 require('./bootstrap');
+require('./scripts');
+require('./datatables-simple-demo');
+require('./api');
 
 window.Vue = require('vue').default;
 

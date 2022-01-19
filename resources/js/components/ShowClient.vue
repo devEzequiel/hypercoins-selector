@@ -9,8 +9,34 @@
       >
         Editar Cliente
       </button>
+
+
     </div>
 
+    <div>
+      <ul>
+        <li><span>Email: </span> {{ client.email }}</li>
+        <li><span>Email: </span> {{ client.email }}</li>
+        <li><span>Cards Disponíveis: </span> R$ 35,00:</li>
+      </ul>
+      <h4>Cards Disponiveis</h4>
+      <ul>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+        <li>
+        <li><span> R$ 35,00: </span></li>
+      </ul>
+    </div>
     <!-- Modal -->
     <div
         class="modal"

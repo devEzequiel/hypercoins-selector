@@ -17,25 +17,23 @@
       <ul>
         <li><span>Email: </span> {{ client.email }}</li>
         <li><span>Email: </span> {{ client.email }}</li>
-        <li><span>Cards Disponíveis: </span> R$ 35,00:</li>
       </ul>
-      <h4>Cards Disponiveis</h4>
-      <ul>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-        <li>
-        <li><span> R$ 35,00: </span></li>
-      </ul>
+      <div>
+        <h4 class="mt-4">Cards Disponiveis</h4>
+        <ul v-for="card in balance" :key="card.value">
+          <li>{{ client.name }} tem <span>{{ card.quantity }}</span> cards disponíveis no valor de
+            <span>R${{ card.value }}</span></li>
+        </ul>
+
+        <button
+            type="button"
+            class="btn btn-success mt-4"
+            @click="modalClient = true"
+        >
+          Editar Cliente
+        </button>
+      </div>
+
     </div>
     <!-- Modal -->
     <div
@@ -131,6 +129,7 @@ export default {
       id: '',
       client: [],
       data: [],
+      balance: [],
       errors: false,
       modalClient: false
     }
@@ -144,24 +143,31 @@ export default {
       };
 // console.log(this.id)
       api.put(`/clients/${this.id}`, data).then((r) => {
-        api
-            .get("get/client/" + this.id)
-            .then((r) => {
-              this.client = r.data;
-              this.errors = false;
-            })
+        this.getClient();
 
       }).catch((err) => {
         this.errors = true;
       });
     },
+    getBalance() {
+      api.get(`/balance/${this.id}`).then((r) => {
+        this.balance = r.data;
+
+      }).catch((err) => {
+        this.errors = true;
+      });
+    },
+    getClient() {
+      api.get("get/client/" + this.id).then((r) => {
+        this.client = r.data;
+      });
+    }
   },
   mounted() {
     const url = window.location.href;
     this.id = url.charAt(url.length - 1);
-    api.get("get/client/" + this.id).then((r) => {
-      this.client = r.data;
-    });
+    this.getClient();
+    this.getBalance();
   },
 };
 </script>

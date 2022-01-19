@@ -56,9 +56,27 @@ class ClientController extends Controller
         return view("clients.show");
     }
 
-    public function create()
+    public function getBalance($id)
     {
-        return view("clients.create");
+        try {
+            $balance = AvailableCard::selectRaw('value, count(*) as total')
+                ->where('client_id', $id)
+                ->groupBy('value')
+                ->get()->toArray();
+
+            $quantity = [];
+            foreach ($balance as $b) {
+                $quantity[] = ['value' => $b['value'], 'quantity' => $b['total']];
+            }
+
+            return response()->json($quantity);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 422);
+        }
     }
 
     public function store(Request $request): JsonResponse

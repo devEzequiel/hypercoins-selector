@@ -13,9 +13,9 @@
       </button>
     </div>
 
-    <ul v-for="client in clients" :key="client.client.id">
-      <div class="client-name">
-        {{ client.client.name }}
+    <ul v-for="client in clients" :key="client.id">
+      <div class="client-name" @click="getClient(client.id)">
+        {{ client.name }}
       </div>
     </ul>
 
@@ -141,8 +141,6 @@ export default {
         password: this.password,
       };
 
-      console.log(data);
-
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -151,7 +149,7 @@ export default {
         api
           .get("get/clients")
           .then((r) => {
-            this.clients = r.data.data;
+            this.clients = r.data;
             this.showModal = false;
           })
           .catch((err) => {
@@ -160,12 +158,14 @@ export default {
       });
     },
     async getClient(id) {
-      await api.get("get/clients" + id);
+      // console.log(id);
+      // await api.get("clients/" + id);
+      window.location.href = `clients/${id}`;
     }
   },
   beforeCreate() {
     api.get("get/clients").then((r) => {
-      this.clients = r.data.data;
+      this.clients = r.data;
     });
   },
 };

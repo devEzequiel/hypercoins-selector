@@ -24,6 +24,7 @@ Route::namespace('clients')->name('clients.')->group(function () {
     Route::get('/clients', [ClientController::class, 'index'])->name('index');
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('show');
     Route::get('/get/clients', [ClientController::class, 'getClients'])->name('getClients');
+    Route::get('/get/client/{id}', [ClientController::class, 'getClient'])->name('getClient');
     Route::post('/clients', [ClientController::class, 'store'])->name('store');
     Route::put('/clients', [ClientController::class, 'addBalance'])->name('add.balance');
     Route::put('/clients/{id}', [ClientController::class, 'update'])->name('update');

@@ -35,10 +35,7 @@ class ClientController extends Controller
                 $data[] = ['client' => $client, 'balance' => $quantity];
             }
 
-            return response()->json([
-                'success' => true,
-                'data' => $data
-            ], 200);
+            return response()->json($clients, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -47,11 +44,16 @@ class ClientController extends Controller
         }
     }
 
-    public function show(int $id)
+    public function getClient(int $id)
     {
         $client = Client::findOrFail($id);
 
-        return view("clients.show")->with(compact('client'));
+        return response()->json($client);
+    }
+
+    public function show()
+    {
+        return view("clients.show");
     }
 
     public function create()
@@ -117,7 +119,7 @@ class ClientController extends Controller
     public function update(int $id, Request $request): JsonResponse
     {
         $data = $request->validate([
-            'email' => 'nullable|unique:clients',
+            'email' => 'nullable|email|unique:clients',
             'name' => 'nullable',
             'password' => 'nullable'
         ]);

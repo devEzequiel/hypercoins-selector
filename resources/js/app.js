@@ -21,7 +21,7 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('login', require('./components/Login.vue').default);
-Vue.component('clients', require('./components/Clients/index.vue').default);
+Vue.component('client', require('./components/Clients.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -33,6 +33,7 @@ Vue.component('clients', require('./components/Clients/index.vue').default);
  var app = new Vue({
   el: '#clients',
   data: {
-    message: 'Hello Vue!'
+    message: 'Hello Vue!',
+    show: true
   }
 })

@@ -59,14 +59,17 @@ class ClientController extends Controller
     public function getBalance($id)
     {
         try {
-            $balance = AvailableCard::selectRaw('value, count(*) as total')
-                ->where('client_id', $id)
-                ->groupBy('value')
-                ->get()->toArray();
-
             $quantity = [];
-            foreach ($balance as $b) {
-                $quantity[] = ['value' => $b['value'], 'quantity' => $b['total']];
+            for ($i = 1; $i <= 6; $i++) {
+
+                $balance = AvailableCard::selectRaw('value, count(*) as total')
+                ->where('client_id', $id)
+                ->where('value', $i)
+                ->get()->toArray();
+                $quantity[$i] = [
+                    "value" => $balance[0]["value"],
+                    "total" => $balance[0]["total"]
+                ];
             }
 
             return response()->json($quantity);

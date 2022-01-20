@@ -52,6 +52,32 @@ body {
   font-size: 17px;
 }
 
+.icon-client {
+  position: absolute;
+  right: 22px;
+  top: 62px;
+  font-size: 17px;
+}
+
+.icon-client > button {
+  background-color: #f8f9fa;
+  border: none;
+  color: #212529;
+  font-size: 18px;
+}
+
+.edit-client {
+  margin-right: 6px;
+}
+
+.edit-client:hover {
+  color: #146c43;
+}
+
+.delete-client:hover {
+  color: #f31212;
+}
+
 .close {
   background: none;
   border: none;
@@ -72,4 +98,21 @@ body {
   position: absolute;
   left: 19px;
   font-weight: 800;
+}
+
+.input-saldo {
+  display: flex !important;
+  margin-bottom: 4px;
+}
+
+.input-saldo > input {
+  max-width: 200px;
+  height: 48px;
+  margin-right: 20px;
+}
+
+.input-saldo > span {
+  margin-top: 2px;
+  font-size: 1.5rem;
+  font-weight: bolder;
 }

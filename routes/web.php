@@ -29,8 +29,6 @@ Route::namespace('clients')->name('clients.')->group(function () {
     Route::post('/clients', [ClientController::class, 'store'])->name('store');
     Route::put('/clients', [ClientController::class, 'addBalance'])->name('add.balance');
     Route::put('/clients/{id}', [ClientController::class, 'update'])->name('update');
-
-    // Route::get('/clients', [ClientController::class, 'create'])->name('create');
     Route::delete('/client/{id}', [ClientController::class, 'destroy'])->name('delete');
 });
 

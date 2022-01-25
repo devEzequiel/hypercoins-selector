@@ -19,10 +19,10 @@
         <li><span>Senha: </span> {{ client.password }}</li>
       </ul>
       <div>
-        <h4 class="mt-4">Saldo Disponivel</h4>
+        <h4 class="mt-4 mb-4">Saldo Disponivel</h4>
         <div v-if="balance.length == 0">Nenhum saldo disponível</div>
         <ul v-for="card in balance" :key="card.value">
-          <li v-if="card.value">
+          <li v-if="card.value" class="value-balance">
             <span>{{ card.total }}</span> cards de
             <span>R${{ card.value }}</span>
           </li>
@@ -39,29 +39,33 @@
     </div>
 
     <!-- Confirm delete-->
-    <div class="modal" tabindex="-1" v-if="modalDelete">
-      <div class="modal-dialog" role="document">
+
+    <div
+      class="modal bd-example-modal-sm"
+      tabindex="-1"
+      role="dialog"
+      v-if="modalDelete"
+    >
+      <div class="modal-dialog modal-sm">
         <div class="modal-content">
-          <div class="modal-body">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Deseja excluir esse usuário?
-            </h5>
-            <div class="">
-              <button
-                type="button"
-                class="btn btn-danger"
-                @click="modalDelete = false"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                @click="deleteClient()"
-              >
-                Excluir
-              </button>
-            </div>
+          <h5 class="modal-title" id="exampleModalLabel">
+            Deseja excluir esse usuário?
+          </h5>
+          <div class="">
+            <button
+              type="button"
+              class="btn btn-danger"
+              @click="modalDelete = false"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              @click="deleteClient()"
+            >
+              Excluir
+            </button>
           </div>
         </div>
       </div>
@@ -76,7 +80,7 @@
             <button
               type="button"
               class="close"
-              @click="modalBalance = false"
+              @click="closeModalBalance()"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -91,12 +95,23 @@
                     <input
                       type="text"
                       class="form-control"
-                      id="name"
-                      v-model="data[value.key]"
+                      v-model="array[value.id]"
                       placeholder="Insira a quantidade de cards"
                     />
                     <span>{{ balance[value.id].total }}</span>
+                    <button
+                      @click="addBalance(value.id)"
+                      type="button"
+                      class="btn btn-primary btn-submit btn-send-balance"
+                    >
+                      Atualizar
+                    </button>
                   </div>
+                  <!-- <span
+                    v-if="errorsBalance[value.id]"
+                    class="text-muted error-client error-balance"
+                    >{{ errorsBalance[value.id] }}</span
+                  > -->
                 </div>
               </div>
               <div class="mt-4 submitCLient">
@@ -105,16 +120,9 @@
                   type="button"
                   class="btn btn-secondary mr-1 closeModal"
                   data-dismiss="modal"
-                  @click="modalClient = false"
+                  @click="closeModalBalance()"
                 >
                   Close
-                </button>
-                <button
-                  @click="addBalance()"
-                  type="button"
-                  class="btn btn-primary btn-submit"
-                >
-                  Atualizar
                 </button>
               </div>
             </form>
@@ -215,6 +223,7 @@ export default {
     return {
       id: "",
       client: [],
+      array: [],
       data: [],
       balance: [],
       values: [
@@ -226,14 +235,35 @@ export default {
         { id: 6, value: 150 },
       ],
       errors: false,
+      errorsBalance: [],
       modalClient: false,
       modalBalance: false,
       modalDelete: false,
     };
   },
   methods: {
-    addBalance() {
-      console.log(this.data.array);
+    async addBalance(value) {
+
+      const data = {
+        client_id: this.id,
+        value: value,
+        quantity: this.array[value],
+      };
+      try {
+        await api.put("/clients", data);
+        this.getBalance();
+        this.array[value] = '';
+      } catch (err) {
+        this.errorsBalance[value] = err.response.data.message;
+      }
+
+      if (this.errorsBalance[value]) {
+        this.errorsBalance[value] = "Erro!";
+      }
+    },
+    closeModalBalance() {
+      this.modalBalance = false;
+      this.array = [];
     },
     updateClient() {
       const data = {
@@ -251,20 +281,18 @@ export default {
           this.errors = true;
         });
     },
-    getBalance() {
-      api
-        .get(`/balance/${this.id}`)
-        .then((r) => {
-          this.balance = r.data;
-        })
-        .catch((err) => {
-          this.errors = true;
-        });
+    async getBalance() {
+      try {
+        const response = await api.get(`/balance/${this.id}`);
+        this.balance = response.data;
+      } catch (err) {
+        this.errors = true;
+      }
     },
-    getClient() {
-      api.get("get/client/" + this.id).then((r) => {
-        this.client = r.data;
-      });
+    async getClient() {
+      const response = await api.get("get/client/" + this.id);
+
+      this.client = response.data;
     },
     deleteClient() {
       api.delete("client/" + this.id).then((r) => {

@@ -13,33 +13,38 @@ class CardController extends Controller
         return view('cards.index');
     }
 
+
     public function getCards(): JsonResponse
     {
         try {
             $cards1 = Card::where('value', 1)
-                ->get();
+                ->get()->toArray();
 
             $cards2 = Card::where('value', 2)
-                ->get();
+                ->get()->toArray();
 
             $cards3 = Card::where('value', 3)
-                ->get();
+                ->get()->toArray();
 
             $cards4 = Card::where('value', 4)
-                ->get();
+                ->get()->toArray();
 
             $cards5 = Card::where('value', 5)
-                ->get();
+                ->get()->toArray();
 
             $cards6 = Card::where('value', 6)
-                ->get();
+                ->get()->toArray();
 
-            $cards = array('1' => $cards1, '2' => $cards2, '3' => $cards3, '4' => $cards4, '5' => $cards5, '6' => $cards6);
+            $cards = array(
+                '1' => $cards1[0],
+                '2' => $cards2[0],
+                '3' => $cards3[0],
+                '4' => $cards4[0],
+                '5' => $cards5[0],
+                '6' => $cards6[0]
+            );
 
-            return response()->json([
-                'success' => true,
-                'data' => $cards
-            ], 200);
+            return response()->json($cards, 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -48,9 +53,20 @@ class CardController extends Controller
         }
     }
 
-    public function create()
+    public function getSum()
     {
-        return view("cards.create");
+        try {
+            $cards = Card::selectRaw('value, count(*) as total')
+                ->groupBy('value')
+                ->get();
+
+            return response()->json($cards, 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 422);
+        }
     }
 
     public function store(Request $request): JsonResponse

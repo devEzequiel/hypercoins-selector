@@ -46,11 +46,15 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Clientes
                             </a>
-                            <a class="nav-link collapsed" href="/cards" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="/cards">
                                 <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
                                 Gift Cards
                             </a>
-                            <a class="nav-link collapsed" href="/reports" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="/get/cards">
+                                <div class="sb-nav-link-icon"><i class="fas fa-gift"></i></div>
+                                Resgatar PIN's
+                            </a>
+                            <a class="nav-link collapsed" href="/reports">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-excel"></i></div>
                                 Relatórios
                             </a>

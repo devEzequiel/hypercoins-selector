@@ -63,9 +63,9 @@ class ClientController extends Controller
             for ($i = 1; $i <= 6; $i++) {
 
                 $balance = AvailableCard::selectRaw('value, count(*) as total')
-                ->where('client_id', $id)
-                ->where('value', $i)
-                ->get()->toArray();
+                    ->where('client_id', $id)
+                    ->where('value', $i)
+                    ->get()->toArray();
                 $quantity[$i] = [
                     "value" => $balance[0]["value"],
                     "total" => $balance[0]["total"]
@@ -110,19 +110,41 @@ class ClientController extends Controller
     {
         $data = $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'array' => 'required'
+            'value' => 'required',
+            'quantity' => 'required'
         ]);
 
         try {
-            foreach ($data['array'] as $id => $cards) {
-                if ($cards['quantity'] > 0) {
-                    for ($i = 1; $i <= $cards['quantity']; $i++) {
-                        AvailableCard::create([
-                            'client_id' => $data['client_id'],
-                            'value' => $id
-                        ]);
-                    }
+
+            $available = AvailableCard::where('client_id', $data['client_id'])
+                ->where('value', $data['value'])->get();
+
+            if ($data['quantity'] > 0) {
+                for ($i = 1; $i <= $data['quantity']; $i++) {
+                    AvailableCard::create([
+                        'client_id' => $data['client_id'],
+                        'value' => $data['value']
+                    ]);
                 }
+            } elseif ($data['quantity'] == 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Nenhum saldo enviado'
+                ], 400);
+            } elseif (($data['quantity'] < 0) && ($available->count() >= abs($data['quantity']))) {
+                for ($i = -1; $i >= $data['quantity']; $i--) {
+                    $card = AvailableCard::where('client_id', $data['client_id'])->
+                    where('value', $data['value'])->first();
+
+                    $card->delete();
+
+                }
+            } else //if ($available->count() >= abs($data['quantity']))
+            {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ocorreu um erro'
+                ], 400);
             }
 
             return response()->json([

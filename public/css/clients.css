@@ -78,6 +78,18 @@ body {
   color: #f31212;
 }
 
+.modal-delete {
+  position: absolute;
+  right: 9px;
+  top: 147px;
+  height: 200px !important;
+  width: 280px;
+}
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
 .close {
   background: none;
   border: none;
@@ -115,4 +127,17 @@ body {
   margin-top: 2px;
   font-size: 1.5rem;
   font-weight: bolder;
+}
+
+.btn-send-balance {
+  height: 36px;
+  margin: 7px 0 0 44px;
+  width: 89px;
+}
+
+.value-balance {
+  font-size: 1.05rem;
+  font-weight: bold;
+  color: #474848;
+  margin-top: 2px;
 }

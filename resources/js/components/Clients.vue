@@ -53,7 +53,6 @@
                   v-model="name"
                   placeholder="Insira o nome do cliente"
                 />
-                
               </div>
               <div>
                 <label for="email">Email</label>
@@ -64,7 +63,6 @@
                   v-model="email"
                   placeholder="Insira o email do cliente"
                 />
-                
               </div>
               <div class="form-group">
                 <label for="password">Senha do Cliente</label>
@@ -75,10 +73,9 @@
                   v-model="password"
                   placeholder="Insira a senha de acesso"
                 />
-                
               </div>
               <div class="mt-4 submitCLient">
-              <span v-if="errors" class="text-muted error-client">Preencha os campos corretamente</span>
+                <span v-if="errors" class="text-muted error-client">Erro!</span>
                 <button
                   type="button"
                   class="btn btn-secondary mr-1 closeModal"
@@ -127,12 +124,13 @@ export default {
   },
   methods: {
     checkForm() {
+      this.errors = false;
       if (!this.name || !this.email || !this.password) {
-        return this.errors = true;
+        return (this.errors = true);
       }
       this.createClient();
     },
-    createClient() {
+    async createClient() {
       // e.preventDefault();
       // console.log(this.name)
       const data = {
@@ -145,23 +143,30 @@ export default {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      api.post("/clients", data, headers).then((r) => {
-        api
-          .get("get/clients")
-          .then((r) => {
-            this.clients = r.data;
-            this.showModal = false;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
+
+      try {
+        await api.post("/clients", data, headers);
+        const client = await api.get("get/clients");
+        this.name = "";
+        this.email = "";
+        this.password = "";
+        this.clients = client.data;
+        this.showModal = false;
+      } catch (err) {
+        this.erros = true;
+      }
+
+      if (this.showModal) {
+        this.errors = true;
+      } else {
+        this.errors = false;
+      }
     },
     async getClient(id) {
       // console.log(id);
       // await api.get("clients/" + id);
       window.location.href = `clients/${id}`;
-    }
+    },
   },
   beforeCreate() {
     api.get("get/clients").then((r) => {

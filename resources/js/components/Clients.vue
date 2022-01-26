@@ -4,7 +4,7 @@
       <h1 class="mb-3">Clientes</h1>
       <button
         type="button"
-        class="btn btn-success create-client"
+        class="btn btn-outline-dark btn-font create-client"
         v-on:click="showModal = true"
         data-target="#exampleModalLong"
         data-toggle="modal"

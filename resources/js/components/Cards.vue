@@ -1,13 +1,21 @@
 <template>
-  <div class="container">
+  <div>
     <div class="client-head">
       <h1 class="mb-3">Gift Cards</h1>
+
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-font create-client"
+        v-on:click="modalCreate = true"
+        data-toggle="modal"
+      >
+        Adicionar
+      </button>
     </div>
 
     <!-- Modal Card -->
     <div
       class="modal"
-      id="exampleModal"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -17,7 +25,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Editar Cliente</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Adicionar Gift Card</h5>
             <button
               type="button"
               class="close"
@@ -30,54 +38,35 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="name">Nome</label>
+                <label for="name">PIN</label>
                 <input
                   type="text"
                   class="form-control"
-                  id="name"
-                  v-model="data.name"
-                  placeholder="Insira o nome do cliente"
+                  id="code"
+                  v-model="data.code"
+                  placeholder="XXXX XXXX XXXX XXXX"
                 />
-                <pre>{{ client.name }}</pre>
               </div>
-              <div>
-                <label for="email">Email</label>
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  v-model="data.email"
-                  placeholder="Insira o email do cliente"
-                />
-                <pre>{{ client.email }}</pre>
-              </div>
-              <div class="form-group">
-                <label for="password">Senha do Cliente</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  v-model="data.password"
-                  placeholder="Insira a senha de acesso"
-                />
-                <pre>{{ client.password }}</pre>
-              </div>
+
+              <select class="form-control" v-for="value in values" :key="value.id">
+                <option>{{value.value}}</option>
+              </select>
               <div class="mt-4 submitCLient">
                 <span v-if="errors" class="text-muted error-client">Erro!</span>
                 <button
                   type="button"
                   class="btn btn-secondary mr-1 closeModal"
                   data-dismiss="modal"
-                  @click="modalClient = false"
+                  @click="modalCreate = false"
                 >
                   Close
                 </button>
                 <button
-                  @click="updateClient()"
+                  @click="createCard()"
                   type="button"
                   class="btn btn-primary btn-submit"
                 >
-                  Atualizar
+                  Adicionar
                 </button>
               </div>
             </form>
@@ -86,16 +75,23 @@
       </div>
     </div>
   </div>
-  </div>
 </template>
 
 <script>
-import api from './../api';
+import api from "./../api";
 export default {
   data() {
     return {
       cards: [],
       sum: [],
+      values: [
+        { id: 1, value: 35 },
+        { id: 2, value: 50 },
+        { id: 3, value: 55.9 },
+        { id: 4, value: 56 },
+        { id: 5, value: 70 },
+        { id: 6, value: 150 },
+      ],
       modalCreate: false,
       array: [],
     };

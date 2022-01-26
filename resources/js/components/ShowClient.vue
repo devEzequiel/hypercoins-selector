@@ -30,7 +30,7 @@
 
         <button
           type="button"
-          class="btn btn-success mt-4"
+          class="btn btn-outline-dark btn-font mt-4"
           @click="modalBalance = true"
         >
           Editar Saldo
@@ -46,25 +46,25 @@
       role="dialog"
       v-if="modalDelete"
     >
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+      <div class="modal-dialog modal-sm container-modal-delete">
+        <div class="modal-content modal-delete">
           <h5 class="modal-title" id="exampleModalLabel">
             Deseja excluir esse usuário?
           </h5>
-          <div class="">
+          <div>
             <button
               type="button"
-              class="btn btn-danger"
-              @click="modalDelete = false"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              class="btn btn-success"
+              class="btn btn-sm btn-danger"
               @click="deleteClient()"
             >
               Excluir
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-secondary"
+              @click="modalDelete = false"
+            >
+              Cancelar
             </button>
           </div>
         </div>

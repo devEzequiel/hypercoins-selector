@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class ReportController extends Controller
@@ -39,6 +40,11 @@ class ReportController extends Controller
                 $query->select('id', 'name');
             }))
                 ->get();
+
+//            $report = DB::table('clients')
+//                ->join('reports', 'clients.id', '=', 'reports.client_id')
+//                ->select('clients.name', 'reports.amount', 'reports.created_at')
+//                ->get();
 
             return response()->json([
                 'success' => true,

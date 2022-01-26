@@ -65,6 +65,11 @@ body {
   max-width: 160px;
 }
 
+.filter-button {
+  max-width: 200px;
+  text-align: end;
+}
+
 .table-report {
   max-width: 800px;
 }

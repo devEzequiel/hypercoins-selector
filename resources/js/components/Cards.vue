@@ -24,9 +24,9 @@
         </thead>
         <tbody>
           <tr v-for="card in cards" :key="card.id">
-            <th scope="row">{{card.id}}</th>
-            <td>{{card.code}}</td>
-            <td>{{card.value}}</td>
+            <th scope="row">{{ card.id }}</th>
+            <td>{{ card.code }}</td>
+            <td>{{ card.value }}</td>
           </tr>
         </tbody>
       </table>
@@ -80,7 +80,7 @@
                       :key="value.id"
                       v-bind:value="value.id"
                     >
-                      {{ value.value }}
+                      {{ formatValue(value.value) }}
                     </option>
                   </select>
                 </div>
@@ -142,6 +142,13 @@ export default {
     };
   },
   methods: {
+    formatValue(value) {
+      var formated = value.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      });
+      return formated;
+    },
     async getCards() {
       const response = await api.get("/cards/all");
 

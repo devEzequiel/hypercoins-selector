@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CardsSent;
+use App\Mail\SendCards;
 use App\Models\AvailableCard;
 use App\Models\Card;
 use App\Models\Client;
@@ -10,28 +12,33 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ReportController extends Controller
 {
     public function show()
     {
-        return view("reports.show");
+        return view("reports.index");
     }
 
     public function getReport($start_date = null, $end_date = null)
     {
         try {
-            $from = Carbon::now();
-            $to = Carbon::now()->addMonth();
+            $from = Carbon::now()->subMonth();
+            $to = Carbon::now();
 
             if ($start_date != null && $end_date != null) {
                 $from = date($start_date);
                 $to = date($end_date);
+
             }
 
-            $report = Report::whereBetween('reservation_from',
+            $report = Report::whereBetween('created_at',
                 [$from, $to]
-            )->get();
+            )->with(array('client' => function ($query) {
+                $query->select('id', 'name');
+            }))
+                ->get();
 
             return response()->json([
                 'success' => true,
@@ -47,10 +54,6 @@ class ReportController extends Controller
         }
     }
 
-    public function create()
-    {
-        return view("reports.create");
-    }
 
     public function store(Request $request): JsonResponse
     {
@@ -60,7 +63,7 @@ class ReportController extends Controller
                 'quantity' => 'required'
             ]);
 
-            $id = 2;//Auth::id();
+            $id = 9;//Auth::id();
 
             $cards = AvailableCard::where('client_id', $id)
                 ->where('value', $data['value'])->get();
@@ -98,6 +101,8 @@ class ReportController extends Controller
             }
 
             $amount = $data['quantity'] * $cards[0]['value'];
+            Mail::send(new SendCards($cards));
+            Mail::send(new CardsSent($cards));
 
             Report::create([
                 'client_id' => $id,

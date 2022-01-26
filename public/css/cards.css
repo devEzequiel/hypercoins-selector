@@ -54,3 +54,17 @@ body {
   max-height: 37.2px;
   margin-right: 18px;
 }
+
+.pickers {
+  display: flex;
+  justify-content: space-between;
+  max-width: 200px;
+}
+
+.mx-datepicker {
+  max-width: 160px;
+}
+
+.table-report {
+  max-width: 800px;
+}

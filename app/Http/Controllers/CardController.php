@@ -18,7 +18,7 @@ class CardController extends Controller
     {
         try {
 
-            $cards = Card::all();
+            $cards = Card::orderBy('value')->get();
 
             if ($value) {
                 $cards = Card::where('value', $value)->get();

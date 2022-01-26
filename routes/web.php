@@ -46,8 +46,7 @@ Route::namespace('cards')->name('cards.')->group(function () {
 
 Route::namespace('reports')->name('reports.')->group(function () {
     Route::get('/reports', [ReportController::class, 'show'])->name('show');
-    Route::get('/reports/{start_date}/{end_date}', [ReportController::class, 'getReport'])->name('getReport');
-    Route::get('/reports/create', [ReportController::class, 'create'])->name('create');
+    Route::get('get/reports/{start_date?}/{end_date?}', [ReportController::class, 'getReport'])->name('getReport');
 
     Route::post('/reports', [ReportController::class, 'store'])->name('store');
 });

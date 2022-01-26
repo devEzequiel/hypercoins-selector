@@ -27,7 +27,7 @@
                 :key="value.id"
                 v-bind:value="value.id"
               >
-                R${{ value.value }}
+                {{ formatValue(value.value) }}
               </option>
             </select>
           </div>
@@ -39,7 +39,7 @@
             type="button"
             class="btn btn-success btn-submit btn-redeem"
           >
-            Adicionar
+            Resgatar
           </button>
 
           <span
@@ -55,44 +55,6 @@
         </div>
       </form>
     </div>
-
-<!-- 
-    <div class="modal" v-if="modalRequest">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" v-if="error">
-              Deseja solicitar {{ quantity }} de R${{ value }} ao Administrador?
-            </h5>
-            <button
-              type="button"
-              @click="closeRequest()"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="confirm-request">
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="closeRequest()"
-            >
-              Não
-            </button>
-            <button
-              @click="requestBalance()"
-              type="button"
-              class="btn btn-primary btn-submit"
-            >
-              Solicitar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <!-- Modal Balance-->
     <div class="modal" tabindex="-1" v-if="modalSuccess">
@@ -119,14 +81,6 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-        <button
-              type="button"
-              class="btn btn-danger"
-              @click="downloadPdf()"
-            >
-              Não
-            </button></div>
       </div>
     </div>
   </div>
@@ -155,6 +109,13 @@ export default {
     };
   },
   methods: {
+    formatValue(value) {
+      var formated = value.toLocaleString("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      });
+      return formated;
+    },
     async takeCards() {
       this.success = false;
       this.error = "";
@@ -182,17 +143,12 @@ export default {
       }
     },
 
-    async requestCards() {
-
-    },
-
     closeRequest() {
-        this.value = '';
-        this.error = '';
-        this.quantity = '';
-        this.modalRequest = false;
-    }
+      this.value = "";
+      this.error = "";
+      this.quantity = "";
+      this.modalRequest = false;
+    },
   },
-  
 };
 </script>

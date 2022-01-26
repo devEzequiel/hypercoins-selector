@@ -1,0 +1,56 @@
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.form-gift {
+  display: flex;
+  justify-content: space-between;
+}
+
+.success-client {
+  color: #00ca2c !important;
+  position: absolute;
+  left: 19px;
+}
+
+.font-message {
+  font-weight: 500 !important;
+}
+
+.table-cards {
+  max-width: 640px;
+}
+
+.redeem {
+  max-width: 480px;
+}
+
+.confirm-request {
+  display: flex;
+  justify-content: space-between;
+}
+.confirm-request > button {
+  min-width: 120px;
+  margin: 30px 15px 8px 15px;
+  font-size: 1.1rem;
+}
+
+.error-redeem {
+  position: relative !important;
+  left: 0px !important;
+  font-size: 0.9rem;
+  font-weight: 600 !important;
+}
+
+
+.submit-redeem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-redeem {
+  max-height: 37.2px;
+  margin-right: 18px;
+}

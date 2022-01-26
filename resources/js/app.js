@@ -27,6 +27,7 @@ Vue.component('login', require('./components/Login.vue').default);
 Vue.component('client', require('./components/Clients.vue').default);
 Vue.component('show-client', require('./components/ShowClient.vue').default);
 Vue.component('cards', require('./components/Cards.vue').default);
+Vue.component('redeem-cards', require('./components/RedeemCards.vue').default);
 
 
 /**

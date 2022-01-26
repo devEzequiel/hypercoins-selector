@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="client-head">
       <h1 class="mb-3">Gift Cards</h1>
 
@@ -11,6 +11,25 @@
       >
         Adicionar
       </button>
+    </div>
+
+    <div class="table-cards mt-5">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Código</th>
+            <th scope="col">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="card in cards" :key="card.id">
+            <th scope="row">{{card.id}}</th>
+            <td>{{card.code}}</td>
+            <td>{{card.value}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal Card -->
@@ -25,11 +44,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Adicionar Gift Card</h5>
+            <h5 class="modal-title" id="exampleModalLabel">
+              Adicionar Gift Card
+            </h5>
             <button
               type="button"
               class="close"
-              @click="modalClient = false"
+              @click="modalCreate = false"
               aria-label="Close"
             >
               <span aria-hidden="true">&times;</span>
@@ -37,22 +58,43 @@
           </div>
           <div class="modal-body">
             <form>
-              <div class="form-group">
-                <label for="name">PIN</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="code"
-                  v-model="data.code"
-                  placeholder="XXXX XXXX XXXX XXXX"
-                />
+              <div class="form-gift">
+                <div class="form-group col-sm-9">
+                  <label for="name">PIN</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="code"
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    style="text-transform: uppercase"
+                    autocomplete="off"
+                    v-model="code"
+                  />
+                </div>
+                <div class="form-group col-sm-2">
+                  <label for="inputState">Preço</label>
+                  <select class="form-control" v-model="value">
+                    <option value="" selected>Selecionar...</option>
+                    <option
+                      v-for="value in values"
+                      :key="value.id"
+                      v-bind:value="value.id"
+                    >
+                      {{ value.value }}
+                    </option>
+                  </select>
+                </div>
               </div>
 
-              <select class="form-control" v-for="value in values" :key="value.id">
-                <option>{{value.value}}</option>
-              </select>
               <div class="mt-4 submitCLient">
-                <span v-if="errors" class="text-muted error-client">Erro!</span>
+                <span v-if="error" class="text-muted error-client font-message"
+                  >Ocorreu um Erro!</span
+                >
+                <span
+                  v-if="success"
+                  class="text-muted success-client font-message"
+                  >Card adicionado</span
+                >
                 <button
                   type="button"
                   class="btn btn-secondary mr-1 closeModal"
@@ -64,7 +106,7 @@
                 <button
                   @click="createCard()"
                   type="button"
-                  class="btn btn-primary btn-submit"
+                  class="btn btn-success btn-submit"
                 >
                   Adicionar
                 </button>
@@ -93,7 +135,10 @@ export default {
         { id: 6, value: 150 },
       ],
       modalCreate: false,
-      array: [],
+      code: "",
+      value: "",
+      error: false,
+      success: false,
     };
   },
   methods: {
@@ -106,6 +151,25 @@ export default {
       const response = await api.get("/cards/sum");
 
       this.sum = response.data;
+    },
+    async createCard() {
+      this.error = false;
+      this.success = false;
+
+      const data = {
+        code: this.code.toUpperCase(),
+        value: this.value,
+      };
+
+      try {
+        await api.post("/cards", data);
+        this.getCards();
+        this.code = "";
+        this.value = "";
+        this.success = true;
+      } catch (err) {
+        this.error = true;
+      }
     },
   },
   mounted() {

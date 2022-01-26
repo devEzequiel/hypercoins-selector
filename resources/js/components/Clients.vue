@@ -153,7 +153,7 @@ export default {
         this.clients = client.data;
         this.showModal = false;
       } catch (err) {
-        this.erros = true;
+        this.errors = true;
       }
 
       if (this.showModal) {

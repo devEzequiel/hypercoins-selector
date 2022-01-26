@@ -60,7 +60,7 @@ class ReportController extends Controller
                 'quantity' => 'required'
             ]);
 
-            $id = 1;//Auth::id();
+            $id = 2;//Auth::id();
 
             $cards = AvailableCard::where('client_id', $id)
                 ->where('value', $data['value'])->get();

@@ -35,10 +35,10 @@ Route::namespace('clients')->name('clients.')->group(function () {
 Route::namespace('cards')->name('cards.')->group(function () {
     Route::get('/cards', [CardController::class, 'index'])->name('index');
     Route::get('/cards/sum', [CardController::class, 'getSum'])->name('sum');
-    Route::get('get/cards', function () {
+    Route::get('/get/cards', function () {
         return view('cards.redeem');
     })->name('redeem');
-    Route::get('/cards/all', [CardController::class, 'getCards'])->name('getCards');
+    Route::get('/cards/all/{value?}', [CardController::class, 'getCards'])->name('getCards');
     Route::post('/cards', [CardController::class, 'store'])->name('store');
 
     Route::delete('/cards/{id}', [CardController::class, 'destroy'])->name('delete');

@@ -131,23 +131,15 @@ export default {
       try {
         const response = await api.post("/reports", data);
 
-        console.log(response.data.data);
         this.cards = response.data.data;
         this.quantity = "";
         this.value = "";
         this.modalSuccess = true;
       } catch (err) {
         this.error = err.response.data.message;
-        this.value = this.values[this.value - 1].value;
+        this.value = '';
         this.modalRequest = true;
       }
-    },
-
-    closeRequest() {
-      this.value = "";
-      this.error = "";
-      this.quantity = "";
-      this.modalRequest = false;
     },
   },
 };

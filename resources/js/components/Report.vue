@@ -24,8 +24,8 @@
     </div>
 
     <download-csv :data="downloadCsv()" name="relatorio-hypercoins.csv"
-      ><button type="button" class="btn btn-success mt-5">
-        <i class="fas fa-file-csv"></i> Baixar CSV
+      ><button type="button" class="btn btn-lg btn-success mt-5">
+        <i class="fas fa-file-csv" style="font-size: 1.4rem"></i> Baixar CSV
       </button>
     </download-csv>
     <table class="table table-report mt-2">

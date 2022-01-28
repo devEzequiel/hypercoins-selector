@@ -66,13 +66,15 @@ class ReportController extends Controller
         try {
             $data = $request->validate([
                 'value' => 'required',
-                'quantity' => 'required'
+                'quantity' => 'required|integer'
             ]);
 
-            $id = 9;//Auth::id();
+            $client = Client::where('user_id', auth()->user()->id)->first();
 
-            $cards = AvailableCard::where('client_id', $id)
+            $cards = AvailableCard::where('client_id', $client->id)
                 ->where('value', $data['value'])->get();
+
+//            dd($cards->count(), $data['quantity']);
 
             if ($data['quantity'] > $cards->count()) {
                 return response()->json([
@@ -100,7 +102,7 @@ class ReportController extends Controller
                 $card->delete();
 
                 $av_card = AvailableCard::where('value', $data['value'])
-                    ->where('client_id', $id)
+                    ->where('client_id', $client->id)
                     ->first();
 
                 $av_card->delete();
@@ -111,7 +113,7 @@ class ReportController extends Controller
             Mail::send(new CardsSent($cards));
 
             Report::create([
-                'client_id' => $id,
+                'client_id' => $client->id,
                 'amount' => $amount
             ]);
 

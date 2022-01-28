@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\AvailableCard;
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
@@ -91,6 +93,17 @@ class ClientController extends Controller
         ]);
 
         try {
+
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'client' => true,
+                'admin' => false
+            ]);
+
+            $data['user_id'] = $user->id;
+
             $client = Client::create($data);
 
             return response()->json([
@@ -170,6 +183,9 @@ class ClientController extends Controller
         try {
             $client = Client::find($id);
             $client->update($data);
+            $data['password'] = Hash::make($data['password']);
+            $user = User::find($client->user_id);
+            $user->update($data);
 
             return response()->json([
                 'success' => true,
@@ -190,6 +206,8 @@ class ClientController extends Controller
             $client = Client::findOrFail($id);
             $name = $client->name;
             $client->delete();
+            $user = User::find($client->user_id);
+            $user->delete();
 
             return response()->json([
                 'success' => true,

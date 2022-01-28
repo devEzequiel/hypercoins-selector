@@ -73,3 +73,10 @@ body {
 .table-report {
   max-width: 800px;
 }
+
+.logout {
+  background: none;
+  border: none;
+  outline: none;
+  color: #6c757d;
+}

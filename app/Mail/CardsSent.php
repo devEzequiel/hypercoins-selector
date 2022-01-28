@@ -19,10 +19,10 @@ class CardsSent extends Mailable
      *
      * @return void
      */
-    public function __construct($cards)
+    public function __construct($cards, $name)
     {
         $this->cards = $cards;
-        $this->name = 'Ezequiell';
+        $this->name = $name;
     }
 
     /**
@@ -35,6 +35,6 @@ class CardsSent extends Mailable
         $this->subject('Um cliente acaba de resgatar cards em seu site');
         //$this->to(Auth::user()->email, Auth::user()->name);
         $this->to('ezeqcoder@gmail.com', 'Marcos');
-        return $this->view('reports.email', ['name' => 'Ezequiel', 'cards' => $this->cards]);
+        return $this->view('reports.email', ['name' => $this->name, 'cards' => $this->cards]);
     }
 }

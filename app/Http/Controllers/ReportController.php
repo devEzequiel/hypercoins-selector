@@ -74,8 +74,6 @@ class ReportController extends Controller
             $cards = AvailableCard::where('client_id', $client->id)
                 ->where('value', $data['value'])->get();
 
-//            dd($cards->count(), $data['quantity']);
-
             if ($data['quantity'] > $cards->count()) {
                 return response()->json([
                     'success' => false,
@@ -91,7 +89,7 @@ class ReportController extends Controller
                     'message' => 'Não temos cartões suficientes para esse valor. Comunique ao suporte'
                 ], 422);
             }
-
+            DB::beginTransaction();
             $cards = [];
             for ($i = 1; $i <= $data['quantity']; $i++) {
                 $card = Card::where('value', $data['value'])
@@ -109,13 +107,16 @@ class ReportController extends Controller
             }
 
             $amount = $data['quantity'] * $cards[0]['value'];
-            Mail::send(new SendCards($cards));
-            Mail::send(new CardsSent($cards));
+
 
             Report::create([
                 'client_id' => $client->id,
                 'amount' => $amount
             ]);
+            DB::commit();
+
+            Mail::send(new SendCards($cards, $client->name));
+            Mail::send(new CardsSent($cards, $client->name));
 
             return response()->json([
                 'success' => true,

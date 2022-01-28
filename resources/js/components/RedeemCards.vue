@@ -56,6 +56,17 @@
       </form>
     </div>
 
+    <div class="mt-3">
+      <h4 class="mt-4 mb-4">Saldo Disponivel</h4>
+      <div v-if="balance.length == 0">Nenhum saldo disponível</div>
+      <ul v-for="card in balance" :key="card.value">
+        <li v-if="card.value" class="value-balance">
+          <span>{{ card.total }}</span> cards de
+          <span>R${{ card.value }}</span>
+        </li>
+      </ul>
+    </div>
+
     <!-- Modal Balance-->
     <div class="modal" tabindex="-1" v-if="modalSuccess">
       <div class="modal-dialog" role="document">
@@ -99,12 +110,12 @@ export default {
         { id: 5, value: 70 },
         { id: 6, value: 150 },
       ],
+      balance: [],
       value: "",
       cards: [],
       quantity: "",
       error: "",
       success: false,
-      modalRequest: false,
       modalSuccess: false,
     };
   },
@@ -134,13 +145,24 @@ export default {
         this.cards = response.data.data;
         this.quantity = "";
         this.value = "";
+        this.getBalance();
         this.modalSuccess = true;
       } catch (err) {
         this.error = err.response.data.message;
-        this.value = '';
-        this.modalRequest = true;
+        this.value = "";
       }
     },
+    async getBalance() {
+      try {
+        const response = await api.get(`/balance`);
+        this.balance = response.data;
+      } catch (err) {
+        this.errors = true;
+      }
+    },
+  },
+  created() {
+    this.getBalance();
   },
 };
 </script>

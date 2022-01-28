@@ -23,7 +23,7 @@ Route::get('/', function () {
 Route::namespace('clients')->name('clients.')->group(function () {
     Route::get('/clients', [ClientController::class, 'index'])->name('index')->middleware(['admin']);
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('show')->middleware(['admin']);;
-    Route::get('/balance/{id}', [ClientController::class, 'getBalance'])->name('getBalance')->middleware(['client']);;
+    Route::get('/balance/{id?}', [ClientController::class, 'getBalance'])->name('getBalance')->middleware(['client']);;
     Route::get('/get/clients', [ClientController::class, 'getClients'])->name('getClients')->middleware(['client']);;
     Route::get('/get/client/{id}', [ClientController::class, 'getClient'])->name('getClient')->middleware(['client']);;
     Route::post('/clients', [ClientController::class, 'store'])->name('store')->middleware(['admin']);;

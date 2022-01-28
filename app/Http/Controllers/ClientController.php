@@ -58,8 +58,13 @@ class ClientController extends Controller
         return view("clients.show");
     }
 
-    public function getBalance($id)
+    public function getBalance(int $id = null)
     {
+        if (!$id) {
+            $client = Client::where('user_id', auth()->user()->id)->first();
+            $id = $client->id;
+        }
+
         try {
             $quantity = [];
             for ($i = 1; $i <= 6; $i++) {

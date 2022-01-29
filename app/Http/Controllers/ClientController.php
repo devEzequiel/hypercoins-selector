@@ -188,7 +188,11 @@ class ClientController extends Controller
         try {
             $client = Client::find($id);
             $client->update($data);
-            $data['password'] = Hash::make($data['password']);
+
+            if(isset($data['password'])) {
+                $data['password'] = Hash::make($data['password']);
+            }
+            
             $user = User::find($client->user_id);
             $user->update($data);
 

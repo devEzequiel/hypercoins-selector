@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "heroku-prebuild": "npm install -g npm",
+        "heroku-postbuild": "npm run prod",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",

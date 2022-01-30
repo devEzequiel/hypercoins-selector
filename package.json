@@ -30,5 +30,9 @@
         "vue-json-csv": "^1.2.12",
         "vue-resource": "^1.5.3",
         "vue2-datepicker": "^3.10.4"
+    },
+    "engines": {
+        "node": "14.x",
+        "npm": "6.x"
     }
 }

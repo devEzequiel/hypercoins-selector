@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "preinstall": "npm install -g npm",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",

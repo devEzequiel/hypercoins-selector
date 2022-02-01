@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "heroku-prebuild": "npm install -g npm && npm install",
+        "heroku-prebuild": "npm install -g npm && npm install && npm install --global cross-env",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",

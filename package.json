@@ -1,15 +1,15 @@
 {
     "private": true,
     "scripts": {
-        "heroku-prebuild": "npm install -g npm",
+        "heroku-prebuild": "npm install -g npm && npm install",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "build": "npm run prod",
         "prod": "npm run production",
-        "production": "mix --production",
+        "build": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "heroku-postbuild": "npm run prod"
     },
     "devDependencies": {

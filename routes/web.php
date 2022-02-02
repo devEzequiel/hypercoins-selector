@@ -21,7 +21,7 @@ Route::get('/', function () {
 })->middleware(['client']);
 
 Route::namespace('clients')->name('clients.')->group(function () {
-    Route::get('/clients', [ClientController::class, 'index'])->name('index');
+    Route::get('/clients', [ClientController::class, 'index'])->name('index')->middleware(['admin']);
     Route::get('/clients/{id}', [ClientController::class, 'show'])->name('show')->middleware(['admin']);;
     Route::get('/balance/{id?}', [ClientController::class, 'getBalance'])->name('getBalance')->middleware(['client']);;
     Route::get('/get/clients', [ClientController::class, 'getClients'])->name('getClients')->middleware(['client']);;

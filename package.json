@@ -1,16 +1,13 @@
 {
     "private": true,
     "scripts": {
-        "heroku-prebuild": "npm install -g npm && npm install && npm install --global cross-env",
         "dev": "npm run development",
         "development": "mix",
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "build": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "heroku-postbuild": "npm run prod"
+        "production": "cross-env NODE_ENV=production webpack --progress --hide-modules"
     },
     "devDependencies": {
         "@popperjs/core": "^2.10.2",
